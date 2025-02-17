@@ -1,0 +1,34 @@
+name: Build on PR
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Run Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: denoland/setup-deno@v2
+      with:
+        deno-version: v2.x
+
+    - name: Install dependencies
+      run: deno install
+
+    - name: check codes
+      run: deno check main.ts
+
+    # - name: Run tests
+    #   run: deno test
+
+    - name: Run build
+      run: deno task build
